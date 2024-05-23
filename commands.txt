@@ -1,0 +1,72 @@
+Redis Commands Cheatsheet
+
+Starting Redis Locally
+
+docker run --name my-redis -d -p 6379:6379 redis
+
+This command starts a Redis container named "my-redis" in detached mode (-d) and maps port 6379 of the container to port 6379 of the host machine.
+
+
+
+Accessing the Redis CLI
+
+# Windows
+winpty docker exec -it container_id //bin//bash
+
+# Mac / Linux  
+docker exec -it container_id /bin/bash
+
+
+These commands allow you to access the bash shell inside the running Redis container. Once inside, you can run the redis-cli command to interact with Redis.
+
+
+
+Basic Key-Value Operations:
+
+SET user "Swayam"
+SET tracks "[{title:'typescript', description: 'safasfsfasfdsas'}]"
+GET user
+GET tracks
+DEL tracks
+
+These commands demonstrate setting and retrieving key-value pairs in Redis. The DEL command deletes the specified key.
+
+
+Hash Operations:
+HSET user:100 name "John Doe" email "user@gmail.com" age "30"
+HSET user:100 name
+HGET user:100 email
+
+Redis hashes allow you to store multiple key-value pairs under a single key. The HSET command sets multiple fields in the hash, while HGET retrieves the value of a specific field.
+
+
+
+List Operations (Queue):
+
+
+
+LPUSH problems 1
+LPUSH problems 2  # Push from left side
+
+RPOP problems    # Pop from right side
+
+BRPOP problems 0  # Blocking pop, wait indefinitely until a value is available
+BRPOP problems 5  # Blocking pop, wait for 5 seconds or until a value is available
+
+
+Redis lists can be used as queues. LPUSH and RPUSH add elements to the left or right side of the list, respectively. RPOP removes and returns the rightmost element. BRPOP is a blocking version that waits for an element to be available.
+
+
+
+Stack Operations:
+
+LPUSH stack 1
+LPUSH stack 2
+LPOP stack  # Returns 2, then 1
+
+
+
+To create a stack, you can use LPUSH and LPOP or RPUSH and RPOP. This will push and pop elements from the left or right side of the list.
+
+By combining these basic commands, you can build powerful applications using Redis as a database, cache, or message broker. Remember to replace container_id with the actual ID of your running Redis container.
+

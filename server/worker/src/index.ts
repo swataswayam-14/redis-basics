@@ -9,6 +9,7 @@ async function processSubmission(submission: string) {
     console.log(`Language: ${language}`);
     await new Promise(resolve => setTimeout(resolve, 1000));
     console.log(`Finished processing submission for problemId ${problemId}.`);
+    client.publish("problem_done", JSON.stringify({ problemId, status: "TLE" }));
 }
 
 async function startWorker() {
@@ -18,7 +19,7 @@ async function startWorker() {
         console.log("Worker connected to Redis.");
         while (true) {
             try {
-                const submission = await client.brPop("problems", 0); //brPop (blocking pop until a push happens) to preven the response from being null
+                const submission = await client.brPop("problems", 0); //brPop (blocking pop until a push happens) to prevent the response from being null
                 // @ts-ignore
                 await processSubmission(submission.element);
             } catch (error) {
